@@ -1,0 +1,103 @@
+
+//29_07_14 Funcionando com 4 etapas de aquecimento para melhor solda...210g com agua
+
+
+
+// include the library code:
+#include <LiquidCrystal.h>
+
+// initialize the library with the numbers of the interface pins
+LiquidCrystal lcd(22, 24, 26, 28, 30, 32);
+
+
+int x = 0;
+int row = 0;
+int motor = 7;
+int pressao = 4;
+int rs = 5;
+int ri = 6;
+int dosador = 8;
+int datador = 9;
+const int buttonPin = 40;
+int buttonState = 0;
+
+
+void setup() {
+ pinMode(motor, OUTPUT);
+ pinMode(pressao, OUTPUT);
+ pinMode(rs, OUTPUT);
+ pinMode(ri, OUTPUT);
+ pinMode(dosador, OUTPUT);
+ pinMode(datador, OUTPUT);
+ pinMode(buttonPin, INPUT);     
+ Serial.begin(9600);
+ Serial.println("CLEARDATA");
+ Serial.println("LABEL,Time,x,sin(x)");
+ lcd.begin(16, 2);     
+}
+
+
+void loop(){
+  
+ buttonState = digitalRead(buttonPin);
+ if (buttonState == LOW){
+   Serial.print("DATA,TIME,");
+   Serial.print(x);
+   Serial.print(",");
+   Serial.println(x);
+  row++;
+   x++;
+ lcd.setCursor(0, 0);
+ lcd.print("Un. Produzidas =");
+ lcd.setCursor(0, 1);
+ lcd.print(x);
+ lcd.print("   YOGUS");
+ 
+
+   //Rotina de envase
+ digitalWrite(motor, HIGH);
+ digitalWrite(dosador, HIGH); 
+ delay(318);
+ digitalWrite(dosador, LOW);
+ delay(400);
+ digitalWrite(motor, LOW);
+ delay(100);      
+ digitalWrite(pressao, HIGH);
+ digitalWrite(datador, HIGH);
+ digitalWrite(rs, HIGH); 
+ digitalWrite(ri, HIGH); 
+ delay(100);    
+ digitalWrite(rs, LOW);
+ digitalWrite(ri, LOW);
+ delay(100);
+ digitalWrite(ri, HIGH);
+ delay(100);
+ digitalWrite(ri, LOW);
+ delay(100);
+ digitalWrite(ri, HIGH);
+ delay(100);
+ digitalWrite(ri, LOW);
+ delay(100);
+  digitalWrite(ri, HIGH);
+ delay(100);
+ digitalWrite(ri, LOW);
+ delay(100);
+ digitalWrite(pressao, LOW); 
+ digitalWrite(datador, LOW); 
+ delay(100);
+
+
+ } 
+  if (buttonState == HIGH){
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("PAUSADO");
+      lcd.setCursor(0, 1);
+      lcd.print(x);
+      delay(100);
+
+  }
+  else{};
+
+ 
+}
